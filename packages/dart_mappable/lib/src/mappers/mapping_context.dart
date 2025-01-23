@@ -10,7 +10,12 @@ class MappingContext {
   /// A list of type arguments to get the concrete type for a generic mapper.
   final List<Type> Function()? _args;
 
-  late final List<Type> args = _args?.call() ?? [];
+  List<Type>? _cachedArgs;
+
+  List<Type> get args {
+    if (_cachedArgs != null) return _cachedArgs!;
+    return _cachedArgs = _args?.call() ?? [];
+  }
 
   MappingContext({MapperContainer? container, List<Type> Function()? args})
       : _args = args,
