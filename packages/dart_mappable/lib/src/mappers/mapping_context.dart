@@ -7,7 +7,6 @@ class MappingContext {
   /// The container that is used for this mapping call.
   final MapperContainer container;
 
-  /// A list of type arguments to get the concrete type for a generic mapper.
   final List<Type> args;
 
   MappingContext({MapperContainer? container, this.args = const []})
@@ -55,8 +54,7 @@ class EncodingContext extends MappingContext {
 
   final EncodingOptions? options;
 
-  EncodingContext change(
-      {MapperContainer? container, List<Type>? args}) {
+  EncodingContext change({MapperContainer? container, List<Type>? args}) {
     return EncodingContext(
       container: container ?? this.container,
       args: args ?? this.args,
