@@ -21,19 +21,19 @@ abstract class RecordMapperBase<T extends Record> extends InterfaceMapperBase<T>
 
   @override
   T decode(Object? value, DecodingContext context) {
-    return super.decode(value, context.change(args: apply(context)));
+    return super.decode(value, context);
   }
 
   @override
   Object? encode(T value, EncodingContext context) {
     return InterfaceMapperBase.encodeFields(
-        value, fields.values, ignoreNull, context.change(args: apply(context)));
+        value, fields.values, ignoreNull, context);
   }
 
   @override
   bool isForType(Type type) {
     try {
-      var newArgs = apply(DecodingContext(args: type.args));
+      var newArgs = apply(DecodingContext(args: []));
       var instantiatedType = typeFactory
           .callWith(parameters: [<T>() => T], typeArguments: newArgs);
       return type == instantiatedType;

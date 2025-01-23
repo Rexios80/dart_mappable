@@ -44,7 +44,6 @@ abstract class MapperBase<T extends Object> {
         value,
         DecodingContext(
           container: container,
-          args: type.args,
           options: options,
         ),
       ) as V;
@@ -67,21 +66,6 @@ abstract class MapperBase<T extends Object> {
         EncodingContext(
           container: container,
           options: options?.inheritOptions ?? false ? options : null,
-          args: () {
-            Type type = V;
-            if (includeTypeId ?? false) {
-              type = value.runtimeType;
-            }
-
-            var typeArgs =
-                type.args.map((t) => t == UnresolvedType ? dynamic : t);
-
-            var fallback = this.type.base.args;
-            if (typeArgs.length != fallback.length) {
-              typeArgs = fallback;
-            }
-            return typeArgs.toList();
-          }(),
         ),
       );
 
@@ -121,9 +105,6 @@ abstract class MapperBase<T extends Object> {
       if (!isFor(other)) return false;
       var context = MappingContext(
         container: container,
-        args: value.runtimeType.args
-            .map((t) => t == UnresolvedType ? dynamic : t)
-            .toList(),
       );
       return equals(value, other as T, context);
     } catch (e, stacktrace) {
@@ -141,12 +122,7 @@ abstract class MapperBase<T extends Object> {
 
   int hashValue(T value, [MapperContainer? container]) {
     try {
-      var context = MappingContext(
-        container: container,
-        args: value.runtimeType.args
-            .map((t) => t == UnresolvedType ? dynamic : t)
-            .toList(),
-      );
+      var context = MappingContext(container: container);
       return hash(value, context);
     } catch (e, stacktrace) {
       Error.throwWithStackTrace(
@@ -163,12 +139,7 @@ abstract class MapperBase<T extends Object> {
 
   String stringifyValue(T value, [MapperContainer? container]) {
     try {
-      var context = MappingContext(
-        container: container,
-        args: value.runtimeType.args
-            .map((t) => t == UnresolvedType ? dynamic : t)
-            .toList(),
-      );
+      var context = MappingContext(container: container);
       return stringify(value, context);
     } catch (e, stacktrace) {
       Error.throwWithStackTrace(
