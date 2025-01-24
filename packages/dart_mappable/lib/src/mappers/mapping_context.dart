@@ -14,7 +14,7 @@ class MappingContext {
 
   List<Type> get args {
     if (_cachedArgs != null) return _cachedArgs!;
-    return _cachedArgs = _args?.call() ?? [];
+    return _cachedArgs = (_args?.call() ?? []);
   }
 
   MappingContext({MapperContainer? container, List<Type> Function()? args})
